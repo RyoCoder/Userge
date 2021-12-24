@@ -72,8 +72,8 @@ async def handle_afk_incomming(message: Message) -> None:
     if user_id in USERS:
         if not (USERS[user_id][0] + USERS[user_id][1]) % randint(2, 4):
             if REASON:
-                out_str = (f"I'm still **AFK**.\nReason: <code>{REASON}</code>\n"
-                           f"Last Seen: `{afk_time} ago`")
+                out_str = (f"Tôi đang **OFFLINE**.\nLý do: <code>{REASON}</code>\n"
+                           f"Hoạt động lần cuối: `{afk_time} trước`")
             else:
                 out_str = choice(AFK_REASONS)
             coro_list.append(message.reply(out_str))
@@ -83,8 +83,8 @@ async def handle_afk_incomming(message: Message) -> None:
             USERS[user_id][1] += 1
     else:
         if REASON:
-            out_str = (f"I'm **AFK** right now.\nReason: <code>{REASON}</code>\n"
-                       f"Last Seen: `{afk_time} ago`")
+            out_str = (f"Tôi đang **OFFLINE**.\nLý do: <code>{REASON}</code>\n"
+                       f"Hoạt động lần cuối: `{afk_time} trước`")
         else:
             out_str = choice(AFK_REASONS)
         coro_list.append(message.reply(out_str))
@@ -99,7 +99,7 @@ async def handle_afk_incomming(message: Message) -> None:
     else:
         coro_list.append(CHANNEL.log(
             "#GROUP\n"
-            f"{user_dict['mention']} tagged you in [{chat.title}](http://t.me/{chat.username})\n\n"
+            f"{user_dict['mention']} đã nhắc đến bạn [{chat.title}](http://t.me/{chat.username})\n\n"
             f"{message.text}\n\n"
             f"[goto_msg](https://t.me/c/{str(chat.id)[4:]}/{message.message_id})"))
     coro_list.append(AFK_COLLECTION.update_one({'_id': user_id},
@@ -117,7 +117,7 @@ async def handle_afk_outgoing(message: Message) -> None:
     global IS_AFK  # pylint: disable=global-statement
     IS_AFK = False
     afk_time = time_formatter(round(time.time() - TIME))
-    replied: Message = await message.reply("`I'm no longer AFK!`", log=__name__)
+    replied: Message = await message.reply("`Tôi đã online!`", log=__name__)
     coro_list = []
     if USERS:
         p_msg = ''
